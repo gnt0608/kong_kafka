@@ -19,3 +19,24 @@ resource "konnect_gateway_plugin_kafka_upstream" "kafka_upstream" {
     id = resource.konnect_gateway_route.kafka.id
   }
 }
+
+resource "konnect_gateway_plugin_kafka_consume" "kafka_consume" {
+  config = {
+    bootstrap_servers = [
+      {
+        host = "kafka"
+        port = 29092
+      },
+    ]
+    timeout           = 10000
+    topics             = [{name = "test-topic"}]
+    auto_offset_reset = "latest"
+    commit_strategy   = "auto"
+    mode              = "http-get"
+  }
+  control_plane_id = resource.konnect_gateway_control_plane.control_plane.id
+  protocols        = ["http", "https"]
+  route = {
+    id = resource.konnect_gateway_route.kafka_consume.id
+  }
+}

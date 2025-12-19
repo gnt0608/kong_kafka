@@ -7,7 +7,11 @@ resource "konnect_gateway_route" "kafka" {
   name                       = "Kafka"
   paths                      = ["/"]
   protocols                  = ["http", "https"]
-  service = {
-    id = resource.konnect_gateway_service.kafka.id
-  }
+}
+
+resource "konnect_gateway_route" "kafka_consume" {
+  control_plane_id           = resource.konnect_gateway_control_plane.control_plane.id
+  name                       = "KafkaConsume"
+  paths                      = ["/consumer"]
+  protocols                  = ["http", "https"]
 }
